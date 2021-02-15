@@ -33,10 +33,9 @@ class Deck:
                 print(f"{card.rank} of {card.suit}")
 
 
-class Stack(Deck):
+class Shoe(Deck):
     def __init__(self):
         super().__init__()
-        self.cards = []
         self.num_decks = 0
         self.shuffled = False
 
@@ -45,32 +44,67 @@ class Stack(Deck):
             self.fill()
 
 
-class Hand(Deck):
+class Hand:
     def __init__(self):
-        super().__init__()
+        self.cards = []
         self.points = 0
+
+    def print_cards(self, debug=False):
+        if debug:
+            for card in self.cards:
+                print(f"{card.rank},{card.suit}")
+        else:
+            for card in self.cards:
+                print(f"{card.rank} of {card.suit}")
 
 
 class Player(Hand):
     def __init__(self, name: str):
         super().__init__()
         self.name = name
+        self.bust = False
+
+    def get_points(self):
+        self.points = 0
+        for card in self.cards:
+            self.points += card.points
+        if self.points == 21:
+            print('21!')
+        elif self.points > 21:
+            self.aces = [c for c, card in enumerate(self.cards) if card.rank == 'ace']
+            while self.points > 21 and self.bust == False:
+                for ace in self.aces:
 
 
-class Dealer(Player):
+class Dealer(Player, Shoe):
     def __init__(self, name: str):
         super().__init__(name)
-        self.stack = Stack()
+        self.shoe = Shoe()
 
     def deal(self, players):
         for i in range(2):
-            for player in players:
-                player.cards.append(self.stack.cards.pop(0))
+            for j in range(len(players)):
+                players[j].cards.append(self.shoe.cards.pop(0))
+            self.cards.append(self.shoe.cards.pop(0))
 
     def start_game(self, num_decks: int, players):
-        self.stack.add_decks(num_decks=num_decks)
-        self.stack.shuffle()
+        self.shoe.add_decks(num_decks=num_decks)
+        self.shoe.shuffle()
         self.deal(players=players)
+
+    def hit(self, player):
+        player.cards.append(self.shoe.cards.pop(0))
+
+
+class Game:
+    def __init__(self, dealer, players, num_decks):
+        self.players = players
+        self.dealer = dealer
+        self.dealer.start_game(players=players, num_decks=num_decks)
+
+    def play(self):
+        for player in players:
+            player.get
 
 
 suits = ['hearts', 'spades', 'diamonds', 'clubs']
@@ -89,3 +123,19 @@ points = {'ace': 11,
           'jack': 10,
           'queen': 10,
           'king': 10}
+
+dealer = Dealer("Joe the Dealer")
+player_1 = Player("Player 1")
+player_2 = Player("Player 2")
+players = [player_1, player_2]
+game = Game(num_decks=1, players=players, dealer=dealer)
+
+print(len(dealer.shoe.cards))
+
+for i in range(5):
+    player_2.print_cards()
+    player_2.get_points()
+    print(f"{player_2.name} has {player_2.points} points.")
+    dealer.hit(player=player_2)
+    print('Hit me!')
+
