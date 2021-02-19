@@ -71,9 +71,12 @@ class Player(Hand):
         if self.points == 21:
             print('21!')
         elif self.points > 21:
+            print(self.cards[0])
             self.aces = [c for c, card in enumerate(self.cards) if card.rank == 'ace']
-            while self.points > 21 and self.bust == False:
-                for ace in self.aces:
+            # while self.points > 21 and self.bust == False:
+            #     for ace in self.aces:
+            #         print("Found one.")
+            #         break
 
 
 class Dealer(Player, Shoe):
@@ -130,12 +133,19 @@ player_2 = Player("Player 2")
 players = [player_1, player_2]
 game = Game(num_decks=1, players=players, dealer=dealer)
 
-print(len(dealer.shoe.cards))
 
-for i in range(5):
-    player_2.print_cards()
-    player_2.get_points()
-    print(f"{player_2.name} has {player_2.points} points.")
-    dealer.hit(player=player_2)
-    print('Hit me!')
 
+#for i in range(5):
+    #player_2.print_cards()
+    # player_2.get_points()
+    #print(f"{player_2.name} has {player_2.points} points.")
+    #dealer.hit(player=player_2)
+    #print('Hit me!')
+
+def card_info(player):
+    for card in player.cards:
+        print(f"rank: {card.rank}, suit: {card.suit}, points: {card.points}")
+
+card_info(player_1)
+dealer.hit(player=player_1)
+card_info(player_1)
