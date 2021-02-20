@@ -62,21 +62,24 @@ class Player(Hand):
     def __init__(self, name: str):
         super().__init__()
         self.name = name
-        self.bust = False
+        self.busted = False
 
     def get_points(self):
+        if self.busted:
+            return
         self.points = 0
         for card in self.cards:
             self.points += card.points
         if self.points == 21:
             print('21!')
         elif self.points > 21:
-            print(self.cards[0])
             self.aces = [c for c, card in enumerate(self.cards) if card.rank == 'ace']
-            # while self.points > 21 and self.bust == False:
-            #     for ace in self.aces:
-            #         print("Found one.")
-            #         break
+            if not self.aces:
+                self.busted = True
+            while self.points > 21 and self.busted == False:
+                for ace in self.aces:
+                    print("Found one.")
+                    break
 
 
 class Dealer(Player, Shoe):
@@ -89,6 +92,9 @@ class Dealer(Player, Shoe):
             for j in range(len(players)):
                 players[j].cards.append(self.shoe.cards.pop(0))
             self.cards.append(self.shoe.cards.pop(0))
+        for player in players:
+            player.get_points()
+        self.get_points()
 
     def start_game(self, num_decks: int, players):
         self.shoe.add_decks(num_decks=num_decks)
@@ -97,6 +103,7 @@ class Dealer(Player, Shoe):
 
     def hit(self, player):
         player.cards.append(self.shoe.cards.pop(0))
+        player.get_points()
 
 
 class Game:
@@ -134,18 +141,12 @@ players = [player_1, player_2]
 game = Game(num_decks=1, players=players, dealer=dealer)
 
 
-
-#for i in range(5):
-    #player_2.print_cards()
-    # player_2.get_points()
-    #print(f"{player_2.name} has {player_2.points} points.")
-    #dealer.hit(player=player_2)
-    #print('Hit me!')
-
 def card_info(player):
     for card in player.cards:
         print(f"rank: {card.rank}, suit: {card.suit}, points: {card.points}")
 
-card_info(player_1)
-dealer.hit(player=player_1)
-card_info(player_1)
+
+for i in range(5):
+    print(player_1.points)
+    dealer.hit(player_1)
+    card_info(player_1)
