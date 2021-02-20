@@ -50,12 +50,8 @@ class Hand:
         self.points = 0
 
     def print_cards(self, debug=False):
-        if debug:
-            for card in self.cards:
-                print(f"{card.rank},{card.suit}")
-        else:
-            for card in self.cards:
-                print(f"{card.rank} of {card.suit}")
+        for card in self.cards:
+            print(f"{card.rank} of {card.suit}")
 
 
 class Player(Hand):
@@ -73,11 +69,11 @@ class Player(Hand):
         elif self.points > 21:
             self.check_points()
         if self.busted:
-            return "busted"
+            return
 
     def base_points(self):
-        # if self.busted:
-        #     return
+        if self.busted:
+            return
         self.points = 0
         for card in self.cards:
             self.points += card.points
@@ -91,14 +87,15 @@ class Player(Hand):
 
     def change_aces(self):
         if not self.aces:
-            return
-            # self.busted = True
+            self.busted = True
+            self.points = 0
         for ace in self.aces:
             self.cards[ace].points = 1
             self.base_points()
             if self.points <= 21:
                 return
         self.busted = True
+        self.points = 0
 
 
 class Dealer(Player, Shoe):
@@ -127,14 +124,44 @@ class Dealer(Player, Shoe):
 
 
 class Game:
-    def __init__(self, dealer, players, num_decks):
+    def __init__(self, dealer, players, num_decks, target_points):
         self.players = players
         self.dealer = dealer
+        self.target_points = target_points
+        self.is_over = False
         self.dealer.start_game(players=players, num_decks=num_decks)
 
     def play(self):
+        if self.dealer.points == 21:
+            self.score_game()
+            self.is_over = True
+            return
         for player in players:
-            player.get
+            print(f"{player.name} starting")
+            player.print_cards()
+            i = 0
+            if player.points == 21 and i == 0:
+                print("Blackjack!")
+            elif player.points == 21 and i != 0:
+                print("21")
+            else:
+                while not player.busted and not player.stand:
+                    self.dealer.hit(player)
+                    print(f"{player.name} hits.")
+                    player.print_cards()
+                    if not player.busted and player.points >= self.target_points:
+                        player.stand = True
+        self.score_game()
+
+    def score_game(self):
+        for player in self.players:
+            if self.dealer.points > player.points:
+                print(f"Dealer beat {player.name}")
+            elif self.dealer.points == player.points:
+                print(f"Dealer and {player.name} drew.")
+            else:
+                print(f"{player.name} beat the dealer.")
+        self.is_over = True
 
 
 suits = ['hearts', 'spades', 'diamonds', 'clubs']
@@ -154,25 +181,22 @@ points = {'ace': 11,
           'queen': 10,
           'king': 10}
 
-dealer = Dealer("Joe the Dealer")
-player_1 = Player("Player 1")
-player_2 = Player("Player 2")
-players = [player_1, player_2]
-game = Game(num_decks=1, players=players, dealer=dealer)
-
 
 def card_info(player):
     for card in player.cards:
         print(f"rank: {card.rank}, suit: {card.suit}, points: {card.points}")
 
 
-aces = [True if card.rank == 'ace' else False for card in dealer.shoe.cards]
-player_3 = Player(name="Player 3")
+dealer = Dealer("Joe the Dealer")
+player_1 = Player("Player 1")
+player_2 = Player("Player 2")
+players = [player_1, player_2]
+game = Game(num_decks=1, players=players, dealer=dealer, target_points=17)
+game.play()
 
-for c, card in enumerate(aces):
-    if card:
-        player_3.cards.append(dealer.shoe.cards[c])
-
-for i in range(2):
-    dealer.hit(player_3)
-    card_info(player_3)
+# aces = [True if card.rank == 'ace' else False for card in dealer.shoe.cards]
+# player_3 = Player(name="Player 3")
+#
+# for c, card in enumerate(aces):
+#     if card:
+#         player_3.cards.append(dealer.shoe.cards[c])
