@@ -63,23 +63,42 @@ class Player(Hand):
         super().__init__()
         self.name = name
         self.busted = False
+        self.stand = False
 
     def get_points(self):
+        self.base_points()
+        if self.points == 21:
+            self.stand = True
+            return "21"
+        elif self.points > 21:
+            self.check_points()
         if self.busted:
-            return
+            return "busted"
+
+    def base_points(self):
+        # if self.busted:
+        #     return
         self.points = 0
         for card in self.cards:
             self.points += card.points
         if self.points == 21:
-            print('21!')
-        elif self.points > 21:
-            self.aces = [c for c, card in enumerate(self.cards) if card.rank == 'ace']
-            if not self.aces:
-                self.busted = True
-            while self.points > 21 and self.busted == False:
-                for ace in self.aces:
-                    print("Found one.")
-                    break
+            self.stand = True
+
+    def check_points(self):
+        self.aces = [c for c, card in enumerate(self.cards) if card.rank == 'ace']
+        while not self.busted and self.points > 21:
+            self.change_aces()
+
+    def change_aces(self):
+        if not self.aces:
+            return
+            # self.busted = True
+        for ace in self.aces:
+            self.cards[ace].points = 1
+            self.base_points()
+            if self.points <= 21:
+                return
+        self.busted = True
 
 
 class Dealer(Player, Shoe):
@@ -104,6 +123,7 @@ class Dealer(Player, Shoe):
     def hit(self, player):
         player.cards.append(self.shoe.cards.pop(0))
         player.get_points()
+        player.check_points()
 
 
 class Game:
@@ -146,7 +166,13 @@ def card_info(player):
         print(f"rank: {card.rank}, suit: {card.suit}, points: {card.points}")
 
 
-for i in range(5):
-    print(player_1.points)
-    dealer.hit(player_1)
-    card_info(player_1)
+aces = [True if card.rank == 'ace' else False for card in dealer.shoe.cards]
+player_3 = Player(name="Player 3")
+
+for c, card in enumerate(aces):
+    if card:
+        player_3.cards.append(dealer.shoe.cards[c])
+
+for i in range(2):
+    dealer.hit(player_3)
+    card_info(player_3)
