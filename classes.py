@@ -1,6 +1,6 @@
 import random as rand
 
-rand.seed(123)
+rand.seed(1235)
 
 
 class Card:
@@ -87,14 +87,12 @@ class Player(Hand):
     def change_aces(self):
         if not self.aces:
             self.busted = True
-            self.points = 0
         for ace in self.aces:
             self.cards[ace].points = 1
             self.base_points()
             if self.points <= 21:
                 return
         self.busted = True
-        self.points = 0
 
 
 class Dealer(Player, Shoe):
@@ -144,6 +142,8 @@ class Game:
             if player.points == 21:
                 print("Blackjack!")
                 player.stand = True
+            elif player.points >= self.target_points:
+                player.stand = True
             else:
                 # player continues to hit until they reach their target score or bust
                 while not player.busted and not player.stand:
@@ -155,38 +155,41 @@ class Game:
                     if not player.busted and player.points >= self.target_points:
                         player.stand = True
         # dealer plays
+        # ASSUMPTIONS:
+        # Dealer MUST HIT if they have 16 or less.
+        # Dealer MUST STAND if they have 17 or more.
         print(f"Dealer has {dealer.points} points")
+        while dealer.points < 17 and dealer.points:
+            dealer.hit(dealer)
+            print(dealer.points)
+        if dealer.busted:
+            pass
+        else:
+            dealer.stand = True
 
         self.score_game()
 
     def score_game(self):
         for player in self.players:
             print(f"{player.name} has {player.points} points.")
-            if self.dealer.points > player.points:
-                print(f"Dealer beat {player.name}")
+            print(f"Dealer has {dealer.points} points")
+            if player.busted:
+                print(f"{player.name} busted and lost.")
+            elif self.dealer.busted:
+                print(f"The dealer busted and {player.name} did not. {player.name} wins!")
+            elif self.dealer.points > player.points:
+                print(f"{player.name} had less points and lost.")
             elif self.dealer.points == player.points:
                 print(f"Dealer and {player.name} drew.")
             else:
-                print(f"{player.name} beat the dealer.")
+                print(f"{player.name} had more points and beat the dealer!")
         self.is_over = True
 
 
 suits = ['hearts', 'spades', 'diamonds', 'clubs']
 ranks = ['ace', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'jack', 'queen', 'king']
-
-points = {'ace': 11,
-          'two': 2,
-          'three': 3,
-          'four': 4,
-          'five': 5,
-          'six': 6,
-          'seven': 7,
-          'eight': 8,
-          'nine': 9,
-          'ten': 10,
-          'jack': 10,
-          'queen': 10,
-          'king': 10}
+points = {'ace': 11, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10,
+          'jack': 10, 'queen': 10, 'king': 10}
 
 
 def card_info(player):
@@ -200,10 +203,3 @@ player_2 = Player("Player 2")
 players = [player_1, player_2]
 game = Game(num_decks=1, players=players, dealer=dealer, target_points=17)
 game.play()
-
-# aces = [True if card.rank == 'ace' else False for card in dealer.shoe.cards]
-# player_3 = Player(name="Player 3")
-#
-# for c, card in enumerate(aces):
-#     if card:
-#         player_3.cards.append(dealer.shoe.cards[c])
