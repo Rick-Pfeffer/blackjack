@@ -1,6 +1,6 @@
 import random as rand
 
-rand.seed(2)
+rand.seed(123)
 
 
 class Card:
@@ -65,7 +65,6 @@ class Player(Hand):
         self.base_points()
         if self.points == 21:
             self.stand = True
-            return "21"
         elif self.points > 21:
             self.check_points()
         if self.busted:
@@ -132,29 +131,37 @@ class Game:
         self.dealer.start_game(players=players, num_decks=num_decks)
 
     def play(self):
+        # if the dealer has blackjack, score the game immediately
         if self.dealer.points == 21:
             self.score_game()
             self.is_over = True
             return
+        # each player takes their turn
         for player in players:
             print(f"{player.name} starting")
             player.print_cards()
-            i = 0
-            if player.points == 21 and i == 0:
+            # if player has 21 on the deal, its a blackjack
+            if player.points == 21:
                 print("Blackjack!")
-            elif player.points == 21 and i != 0:
-                print("21")
+                player.stand = True
             else:
+                # player continues to hit until they reach their target score or bust
                 while not player.busted and not player.stand:
                     self.dealer.hit(player)
                     print(f"{player.name} hits.")
                     player.print_cards()
+                    if player.points == 21:
+                        print("21!")
                     if not player.busted and player.points >= self.target_points:
                         player.stand = True
+        # dealer plays
+        print(f"Dealer has {dealer.points} points")
+
         self.score_game()
 
     def score_game(self):
         for player in self.players:
+            print(f"{player.name} has {player.points} points.")
             if self.dealer.points > player.points:
                 print(f"Dealer beat {player.name}")
             elif self.dealer.points == player.points:
