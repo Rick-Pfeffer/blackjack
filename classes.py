@@ -55,11 +55,12 @@ class Hand:
 
 
 class Player(Hand):
-    def __init__(self, name: str):
+    def __init__(self, name: str, target_points=17):
         super().__init__()
         self.name = name
         self.busted = False
         self.stand = False
+        self.target_points = target_points
 
     def get_points(self):
         self.base_points()
@@ -102,12 +103,10 @@ class Dealer(Player, Shoe):
 
     def deal(self, players):
         for i in range(2):
-            for j in range(len(players)):
-                players[j].cards.append(self.shoe.cards.pop(0))
-            self.cards.append(self.shoe.cards.pop(0))
-        for player in players:
+            for player in players + [dealer]:
+                player.cards.append(self.shoe.cards.pop(0))
+        for player in players + [dealer]:
             player.get_points()
-        self.get_points()
 
     def start_game(self, num_decks: int, players):
         self.shoe.add_decks(num_decks=num_decks)
@@ -159,7 +158,7 @@ class Game:
         # Dealer MUST HIT if they have 16 or less.
         # Dealer MUST STAND if they have 17 or more.
         print(f"Dealer has {dealer.points} points")
-        while dealer.points < 17 and dealer.points:
+        while dealer.points < 17:
             dealer.hit(dealer)
             print(dealer.points)
         if dealer.busted:
