@@ -30,13 +30,16 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/!MyDocs/!OMSA/Courses/!Spring_2021/Bayes/Homework/HW3" />
   </component>
   <component name="RunManager" selected="Python.classes">
     <configuration name="classes" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="blackjack" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -135,7 +138,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613933733246</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="adding in latest">
+      <created>1613937926381</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1613937926381</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -144,33 +154,38 @@
     <MESSAGE value="adding in Game.play" />
     <MESSAGE value="uploading latest" />
     <MESSAGE value="adding in proper game scoring in Game.score_game()" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding in proper game scoring in Game.score_game()" />
+    <MESSAGE value="adding in latest" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding in latest" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="934" y="314" key="CommitChangelistDialog2" timestamp="1613933732716">
+    <state x="934" y="314" key="CommitChangelistDialog2" timestamp="1613937925930">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state x="934" y="314" key="CommitChangelistDialog2/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613933732716" />
-    <state width="2539" height="413" key="GridCell.Tab.0.bottom" timestamp="1613935743692">
+    <state x="934" y="314" key="CommitChangelistDialog2/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613937925930" />
+    <state x="1060" y="475" key="FileChooserDialogImpl" timestamp="1614127943316">
+      <screen x="0" y="0" width="2560" height="1440" />
+    </state>
+    <state x="1060" y="475" key="FileChooserDialogImpl/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1614127943316" />
+    <state width="2539" height="413" key="GridCell.Tab.0.bottom" timestamp="1613940205905">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="1899" height="348" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1613423442727" />
-    <state width="2539" height="413" key="GridCell.Tab.0.bottom/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613935743692" />
-    <state width="2539" height="413" key="GridCell.Tab.0.center" timestamp="1613935743692">
+    <state width="2539" height="413" key="GridCell.Tab.0.bottom/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613940205905" />
+    <state width="2539" height="413" key="GridCell.Tab.0.center" timestamp="1613940205905">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="1899" height="348" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1613423442727" />
-    <state width="2539" height="413" key="GridCell.Tab.0.center/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613935743692" />
-    <state width="2539" height="413" key="GridCell.Tab.0.left" timestamp="1613935743692">
+    <state width="2539" height="413" key="GridCell.Tab.0.center/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613940205905" />
+    <state width="2539" height="413" key="GridCell.Tab.0.left" timestamp="1613940205905">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="1899" height="348" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1613423442727" />
-    <state width="2539" height="413" key="GridCell.Tab.0.left/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613935743692" />
-    <state width="2539" height="413" key="GridCell.Tab.0.right" timestamp="1613935743692">
+    <state width="2539" height="413" key="GridCell.Tab.0.left/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613940205905" />
+    <state width="2539" height="413" key="GridCell.Tab.0.right" timestamp="1613940205905">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="1899" height="348" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1613423442727" />
-    <state width="2539" height="413" key="GridCell.Tab.0.right/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613935743692" />
+    <state width="2539" height="413" key="GridCell.Tab.0.right/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613940205905" />
     <state width="2517" height="507" key="GridCell.Tab.1.bottom" timestamp="1613870098622">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
@@ -199,10 +214,10 @@
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state x="797" y="425" key="com.intellij.execution.console.ConsoleHistoryController$MyBrowseAction$1/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613935548526" />
-    <state x="976" y="544" key="com.intellij.ide.util.TipDialog" timestamp="1613931052651">
+    <state x="976" y="544" key="com.intellij.ide.util.TipDialog" timestamp="1614127924180">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state x="976" y="544" key="com.intellij.ide.util.TipDialog/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1613931052651" />
+    <state x="976" y="544" key="com.intellij.ide.util.TipDialog/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1614127924180" />
     <state x="943" y="325" width="672" height="678" key="search.everywhere.popup" timestamp="1613862415434">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
