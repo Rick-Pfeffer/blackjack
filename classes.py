@@ -13,31 +13,28 @@ class Card:
 class Deck:
     def __init__(self):
         self.cards = []
-        self.shuffled = False
 
     def fill(self):
+        # create one full deck
         for suit in suits:
             for rank in ranks:
                 self.cards.append(Card(suit, rank))
 
     def shuffle(self):
         rand.shuffle(self.cards)
-        self.shuffled = True
 
-    def print_cards(self, debug=False):
-        if debug:
-            for card in self.cards:
-                print(f"{card.rank},{card.suit}")
-        else:
-            for card in self.cards:
-                print(f"{card.rank} of {card.suit}")
+    def print_cards(self):
+        # function to print cards, debugging only
+        for card in self.cards:
+            print(f"{card.rank} of {card.suit}")
 
 
 class Shoe(Deck):
+    # class to create "shoes" or stacks of decks.
+    # Blackjack is typically played with more than one deck and up to eight
     def __init__(self):
         super().__init__()
         self.num_decks = 0
-        self.shuffled = False
 
     def add_decks(self, num_decks: int):
         for i in range(num_decks):
@@ -49,52 +46,60 @@ class Hand:
         self.cards = []
         self.points = 0
 
+    # helper function for debugging. Will print players cards
     def print_cards(self, debug=False):
         for card in self.cards:
             print(f"{card.rank} of {card.suit}")
 
 
 class Player(Hand):
+    # Player is initialized with target points. These target points default to 17 (dealer's target) but will be
+    # inputted as a random variable for simulation
     def __init__(self, name: str, target_points=17):
         super().__init__()
         self.name = name
         self.busted = False
         self.stand = False
+        self.winner = False
         self.target_points = target_points
+        self.aces = []
 
+    # Initial function to get the players points
     def get_points(self):
+        # get points assuming all aces are equal to 11
         self.base_points()
-        if self.points == 21:
-            self.stand = True
-        elif self.points > 21:
+        if self.points > 21:
+            # if the player has more than 21 points, we need to check for aces to see if we can adjust their score
             self.check_points()
-        if self.busted:
-            return
-
-    def base_points(self):
-        if self.busted:
-            return
-        self.points = 0
-        for card in self.cards:
-            self.points += card.points
-        if self.points == 21:
+        elif self.points >= self.target_points:
+            # stand if the player hits their target points
             self.stand = True
 
     def check_points(self):
+        # this function is called if a player has over 21 points
+        # first find any aces in the player's hand
         self.aces = [c for c, card in enumerate(self.cards) if card.rank == 'ace']
-        while not self.busted and self.points > 21:
-            self.change_aces()
-
-    def change_aces(self):
         if not self.aces:
+            # if the player has no aces, their points will stay above 21, so they bust
             self.busted = True
-        for ace in self.aces:
-            self.cards[ace].points = 1
-            self.base_points()
-            if self.points <= 21:
-                return
+        else:
+            for ace in self.aces:
+                # for each ace, we need to check the modified score.
+                # first set the ace to one point
+                self.cards[ace].points = 1
+                # then get their points after adjustment
+                self.base_points()
+                if self.points <= 21:
+                    return
+        # if the above if statement never returns, the player has busted
         self.busted = True
 
+    def base_points(self):
+        # this function is required so we don't get a recursive call in get_points
+        # get_points calls this function after adjusting aces, if required
+        self.points = 0
+        for card in self.cards:
+            self.points += card.points
 
 class Dealer(Player, Shoe):
     def __init__(self, name: str):
@@ -116,7 +121,6 @@ class Dealer(Player, Shoe):
     def hit(self, player):
         player.cards.append(self.shoe.cards.pop(0))
         player.get_points()
-        player.check_points()
 
 
 class Game:
