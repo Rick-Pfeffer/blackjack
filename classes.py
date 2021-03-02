@@ -1,4 +1,5 @@
 import random as rand
+import csv
 
 rand.seed(1235)
 
@@ -63,9 +64,12 @@ class Player(Hand):
         self.winner = False
         self.target_points = target_points
         self.aces = []
+        self.points_before = 0
 
     # Initial function to get the players points
     def get_points(self):
+        # get points before the last hit (important for output analysis)
+        self.points_before = self.points
         # get points assuming all aces are equal to 11
         self.base_points()
         if self.points > 21:
@@ -101,6 +105,7 @@ class Player(Hand):
         for card in self.cards:
             self.points += card.points
 
+
 class Dealer(Player, Shoe):
     def __init__(self, name: str):
         super().__init__(name)
@@ -130,6 +135,8 @@ class Game:
         self.target_points = target_points
         self.is_over = False
         self.dealer.start_game(players=players, num_decks=num_decks)
+        dealer.showing_info = ' of '.join([dealer.cards[1].rank, dealer.cards[1].suite])
+        dealer.showing_points = dealer.cards[1].points
 
     def play(self):
         # if the dealer has blackjack, score the game immediately
@@ -202,7 +209,12 @@ def card_info(player):
 
 dealer = Dealer("Joe the Dealer")
 player_1 = Player("Player 1")
-player_2 = Player("Player 2")
-players = [player_1, player_2]
+players = [player_1]
 game = Game(num_decks=1, players=players, dealer=dealer, target_points=17)
 game.play()
+
+output_columns = ['Target Points', 'Player Won?', 'Player Busted?', 'Player Points', 'Dealer Points', 'Dealer Showing', 'Player Points on Last Hit']
+output = [player_1.target_points, player_1.winner, player_1.busted, player_1.points, dealer.points, dealer.showing_points, player_1.points_before, ]
+
+with open('test.csv', 'a') as output_file:
+    output_file.write(','.join([test_1, test_2]))
