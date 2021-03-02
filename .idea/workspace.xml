@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a30b78af-cefa-47b3-80bd-ac7f50326f6b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +148,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614445284874</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="adding in latest">
+      <created>1614654787636</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1614654787636</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -159,15 +164,15 @@
     <MESSAGE value="adding in Game.play" />
     <MESSAGE value="uploading latest" />
     <MESSAGE value="adding in proper game scoring in Game.score_game()" />
-    <MESSAGE value="adding in latest" />
     <MESSAGE value="cleaning up point functions and adding comments throughout" />
-    <option name="LAST_COMMIT_MESSAGE" value="cleaning up point functions and adding comments throughout" />
+    <MESSAGE value="adding in latest" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding in latest" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="934" y="314" key="CommitChangelistDialog2" timestamp="1614445284160">
+    <state x="934" y="314" key="CommitChangelistDialog2" timestamp="1614654787054">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state x="934" y="314" key="CommitChangelistDialog2/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1614445284160" />
+    <state x="934" y="314" key="CommitChangelistDialog2/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1614654787054" />
     <state x="1060" y="475" key="FileChooserDialogImpl" timestamp="1614127943316">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
