@@ -62,6 +62,7 @@ class Player(Hand):
         self.busted = False
         self.stand = False
         self.winner = False
+        self.tied = False
         self.target_points = target_points
         self.aces = []
         self.points_before = 0
@@ -135,7 +136,7 @@ class Game:
         self.target_points = target_points
         self.is_over = False
         self.dealer.start_game(players=players, num_decks=num_decks)
-        dealer.showing_info = ' of '.join([dealer.cards[1].rank, dealer.cards[1].suite])
+        dealer.showing_info = ' of '.join([dealer.cards[1].rank, dealer.cards[1].suit])
         dealer.showing_points = dealer.cards[1].points
 
     def play(self):
@@ -146,11 +147,11 @@ class Game:
             return
         # each player takes their turn
         for player in players:
-            print(f"{player.name} starting")
-            player.print_cards()
+            # print(f"{player.name} starting")
+            # player.print_cards()
             # if player has 21 on the deal, its a blackjack
             if player.points == 21:
-                print("Blackjack!")
+                # print("Blackjack!")
                 player.stand = True
             elif player.points >= self.target_points:
                 player.stand = True
@@ -158,20 +159,18 @@ class Game:
                 # player continues to hit until they reach their target score or bust
                 while not player.busted and not player.stand:
                     self.dealer.hit(player)
-                    print(f"{player.name} hits.")
-                    player.print_cards()
-                    if player.points == 21:
-                        print("21!")
+                    # print(f"{player.name} hits.")
+                    # player.print_cards()
                     if not player.busted and player.points >= self.target_points:
                         player.stand = True
         # dealer plays
         # ASSUMPTIONS:
         # Dealer MUST HIT if they have 16 or less.
         # Dealer MUST STAND if they have 17 or more.
-        print(f"Dealer has {dealer.points} points")
+        # print(f"Dealer has {dealer.points} points")
         while dealer.points < 17:
             dealer.hit(dealer)
-            print(dealer.points)
+            # print(dealer.points)
         if dealer.busted:
             pass
         else:
@@ -181,18 +180,25 @@ class Game:
 
     def score_game(self):
         for player in self.players:
-            print(f"{player.name} has {player.points} points.")
-            print(f"Dealer has {dealer.points} points")
+            # print(f"{player.name} has {player.points} points.")
+            # print(f"Dealer has {dealer.points} points")
             if player.busted:
-                print(f"{player.name} busted and lost.")
+                # print(f"{player.name} busted and lost.")
+                continue
             elif self.dealer.busted:
-                print(f"The dealer busted and {player.name} did not. {player.name} wins!")
+                # print(f"The dealer busted and {player.name} did not. {player.name} wins!")
+                player.winner = True
+                continue
             elif self.dealer.points > player.points:
-                print(f"{player.name} had less points and lost.")
+                # print(f"{player.name} had less points and lost.")
+                continue
             elif self.dealer.points == player.points:
-                print(f"Dealer and {player.name} drew.")
+                # print(f"Dealer and {player.name} drew.")
+                player.tied = True
+                continue
             else:
-                print(f"{player.name} had more points and beat the dealer!")
+                # print(f"{player.name} had more points and beat the dealer!")
+                player.winner = True
         self.is_over = True
 
 
@@ -207,14 +213,29 @@ def card_info(player):
         print(f"rank: {card.rank}, suit: {card.suit}, points: {card.points}")
 
 
-dealer = Dealer("Joe the Dealer")
-player_1 = Player("Player 1")
-players = [player_1]
-game = Game(num_decks=1, players=players, dealer=dealer, target_points=17)
-game.play()
+columns = ['Target Points', 'Player Won?', 'Player Tied?', 'Player Busted?',
+           'Player Points', 'Dealer Points', 'Dealer Showing', 'Player Points on Last Hit']
 
-output_columns = ['Target Points', 'Player Won?', 'Player Busted?', 'Player Points', 'Dealer Points', 'Dealer Showing', 'Player Points on Last Hit']
-output = [player_1.target_points, player_1.winner, player_1.busted, player_1.points, dealer.points, dealer.showing_points, player_1.points_before, ]
+with open('test.csv', 'w', newline='') as output:
+    w = csv.DictWriter(output, fieldnames=columns)
+    w.writeheader()
 
-with open('test.csv', 'a') as output_file:
-    output_file.write(','.join([test_1, test_2]))
+for target in range(12, 22, 1):
+    for i in range(1000):
+        dealer = Dealer("Joe the Dealer")
+        player_1 = Player("Player 1", target_points=target)
+        players = [player_1]
+
+        game = Game(num_decks=1, players=players, dealer=dealer, target_points=target)
+        game.play()
+
+        with open('test.csv', 'a', newline='') as output:
+            w = csv.DictWriter(output, fieldnames=columns)
+            w.writerow({'Target Points': player_1.target_points,
+                        'Player Won?': player_1.winner,
+                        'Player Tied?': player_1.tied,
+                        'Player Busted?': player_1.busted,
+                        'Player Points': player_1.points,
+                        'Dealer Points': dealer.points,
+                        'Dealer Showing': dealer.showing_points,
+                        'Player Points on Last Hit': player_1.points_before})
