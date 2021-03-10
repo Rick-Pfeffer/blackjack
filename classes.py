@@ -36,10 +36,16 @@ class Shoe(Deck):
     def __init__(self):
         super().__init__()
         self.num_decks = 0
+        self.discard_pile = []
 
     def add_decks(self, num_decks: int):
         for i in range(num_decks):
             self.fill()
+
+    def shuffle_discard(self):
+        self.cards = self.discard_pile
+        self.shuffle()
+        self.discard_pile = []
 
 
 class Hand:
@@ -115,7 +121,11 @@ class Dealer(Player, Shoe):
     def deal(self, players):
         for i in range(2):
             for player in players + [dealer]:
-                player.cards.append(self.shoe.cards.pop(0))
+                try:
+                    player.cards.append(self.shoe.cards.pop(0))
+                except IndexError:
+                    self.shoe.shuffle_discard()
+                    player.cards.append(self.shoe.cards.pop(0))
         for player in players + [dealer]:
             player.get_points()
 
@@ -125,7 +135,11 @@ class Dealer(Player, Shoe):
         self.deal(players=players)
 
     def hit(self, player):
-        player.cards.append(self.shoe.cards.pop(0))
+        try:
+            player.cards.append(self.shoe.cards.pop(0))
+        except IndexError:
+            self.shoe.shuffle_discard()
+            player.cards.append(self.shoe.cards.pop(0))
         player.get_points()
 
 
@@ -143,7 +157,6 @@ class Game:
         # if the dealer has blackjack, score the game immediately
         if self.dealer.points == 21:
             self.score_game()
-            self.is_over = True
             return
         # each player takes their turn
         for player in players:
@@ -175,7 +188,6 @@ class Game:
             pass
         else:
             dealer.stand = True
-
         self.score_game()
 
     def score_game(self):
@@ -199,7 +211,19 @@ class Game:
             else:
                 # print(f"{player.name} had more points and beat the dealer!")
                 player.winner = True
-        self.is_over = True
+
+    def reset_hands(self):
+        for player in self.players + [dealer]:
+            player.busted = False
+            player.stand = False
+            player.winner = False
+            player.tied = False
+            player.aces = []
+            player.points_before = 0
+            player.points = 0
+            for card in player.cards:
+                self.dealer.shoe.discard_pile.append(card)
+            player.cards = []
 
 
 suits = ['hearts', 'spades', 'diamonds', 'clubs']
@@ -214,19 +238,22 @@ def card_info(player):
 
 
 columns = ['Target Points', 'Player Won?', 'Player Tied?', 'Player Busted?',
-           'Player Points', 'Dealer Points', 'Dealer Showing', 'Player Points on Last Hit']
+           'Player Points', 'Dealer Points', 'Dealer Showing', 'Player Points on Last Hit',
+           'Decks', 'discard number', 'shoe number', 'equals 1']
 
 with open('test.csv', 'w', newline='') as output:
     w = csv.DictWriter(output, fieldnames=columns)
     w.writeheader()
 
 for target in range(12, 22, 1):
-    for i in range(1000):
+    for i in range(100000):
         dealer = Dealer("Joe the Dealer")
         player_1 = Player("Player 1", target_points=target)
         players = [player_1]
 
-        game = Game(num_decks=1, players=players, dealer=dealer, target_points=target)
+        decks = rand.randint(1, 8)
+
+        game = Game(num_decks=decks, players=players, dealer=dealer, target_points=target)
         game.play()
 
         with open('test.csv', 'a', newline='') as output:
@@ -238,4 +265,11 @@ for target in range(12, 22, 1):
                         'Player Points': player_1.points,
                         'Dealer Points': dealer.points,
                         'Dealer Showing': dealer.showing_points,
-                        'Player Points on Last Hit': player_1.points_before})
+                        'Player Points on Last Hit': player_1.points_before,
+                        'Decks': game.dealer.shoe.num_decks,
+                        'discard number': len(game.dealer.shoe.discard_pile),
+                        'shoe number': len(game.dealer.shoe.cards),
+                        'equals 1': (len(game.dealer.shoe.discard_pile) + len(game.dealer.shoe.cards)) / 52 / (
+                            decks)})
+
+        game.reset_hands()
