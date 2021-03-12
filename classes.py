@@ -71,6 +71,7 @@ class Player(Hand):
         self.tied = False
         self.target_points = target_points
         self.aces = []
+        self.points_array = []
         self.points_before = 0
 
     # Initial function to get the players points
@@ -85,6 +86,7 @@ class Player(Hand):
         elif self.points >= self.target_points:
             # stand if the player hits their target points
             self.stand = True
+        self.points_array.append(self.points)
 
     def check_points(self):
         # this function is called if a player has over 21 points
@@ -221,6 +223,7 @@ class Game:
             player.aces = []
             player.points_before = 0
             player.points = 0
+            player.points_array = []
             for card in player.cards:
                 self.dealer.shoe.discard_pile.append(card)
             player.cards = []
@@ -239,9 +242,9 @@ def card_info(player):
 
 columns = ['Target Points', 'Player Won?', 'Player Tied?', 'Player Busted?',
            'Player Points', 'Dealer Points', 'Dealer Showing', 'Player Points on Last Hit',
-           'Decks', 'discard number', 'shoe number', 'equals 1']
+           'Decks', 'Points Array']
 
-with open('test.csv', 'w', newline='') as output:
+with open('output.csv', 'w', newline='') as output:
     w = csv.DictWriter(output, fieldnames=columns)
     w.writeheader()
 
@@ -256,20 +259,18 @@ for target in range(12, 22, 1):
         game = Game(num_decks=decks, players=players, dealer=dealer, target_points=target)
         game.play()
 
-        with open('test.csv', 'a', newline='') as output:
+        with open('output.csv', 'a', newline='') as output:
             w = csv.DictWriter(output, fieldnames=columns)
             w.writerow({'Target Points': player_1.target_points,
-                        'Player Won?': player_1.winner,
-                        'Player Tied?': player_1.tied,
-                        'Player Busted?': player_1.busted,
+                        'Player Won?': int(player_1.winner),
+                        'Player Tied?': int(player_1.tied),
+                        'Player Busted?': int(player_1.busted),
                         'Player Points': player_1.points,
                         'Dealer Points': dealer.points,
                         'Dealer Showing': dealer.showing_points,
                         'Player Points on Last Hit': player_1.points_before,
                         'Decks': game.dealer.shoe.num_decks,
-                        'discard number': len(game.dealer.shoe.discard_pile),
-                        'shoe number': len(game.dealer.shoe.cards),
-                        'equals 1': (len(game.dealer.shoe.discard_pile) + len(game.dealer.shoe.cards)) / 52 / (
-                            decks)})
+                        'Points Array': player_1.points_array})
 
         game.reset_hands()
+ 
