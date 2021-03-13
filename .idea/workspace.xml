@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a30b78af-cefa-47b3-80bd-ac7f50326f6b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/analysis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/analysis.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,7 +189,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615345067681</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="analysis section added">
+      <created>1615571099591</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1615571099591</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -204,13 +209,14 @@
     <MESSAGE value="adding in latest" />
     <MESSAGE value="adding in simulation steps" />
     <MESSAGE value="simulating 1 mm games" />
-    <option name="LAST_COMMIT_MESSAGE" value="simulating 1 mm games" />
+    <MESSAGE value="analysis section added" />
+    <option name="LAST_COMMIT_MESSAGE" value="analysis section added" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="934" y="314" key="CommitChangelistDialog2" timestamp="1615345065373">
+    <state x="934" y="314" key="CommitChangelistDialog2" timestamp="1615571098638">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state x="934" y="314" key="CommitChangelistDialog2/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1615345065373" />
+    <state x="934" y="314" key="CommitChangelistDialog2/0.0.2560.1440/2560.-263.1080.1920@0.0.2560.1440" timestamp="1615571098638" />
     <state x="1060" y="475" key="FileChooserDialogImpl" timestamp="1615138065075">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
