@@ -3,5 +3,5 @@ Simulation "Mini-project 1" for Georgia Tech OMSA. These scripts will find the b
 
 To run the experiment:
 
-1) Run classes.py too run the simulation
+1) Run classes.py to run the simulation
 2) Run analysis.py for graphics
